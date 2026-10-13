@@ -23,9 +23,9 @@ SWR **SmartRoute** 게이트웨이(NXP i.MX6ULL, 헤드리스 Modbus 통신변�
 | 경로 | 역할 |
 |---|---|
 | `conf/machine/swr-gateway.conf` | 전용 머신. imx-base.inc 위에 전용 DTB, EVK U-Boot 포팅, 헤드리스 `MACHINE_FEATURES`(optee/wifi/bt 없음), 호스트명 `smartroute` |
-| `conf/distro/fsl-imx-fb-swr.conf` | 배포판. NXP fsl-imx-fb에서 bluetooth/wifi/3g/nfc/nfs/zeroconf/pcmcia/pci/ptest/alsa/opengl 제거 — bluez/ofono/avahi/rpcbind/wpa/mesa가 이미지에서 빠짐 |
-| `recipes-core/images/swr-image.bb` | 양산 이미지: systemd + swr + swr-web + lighttpd + ntpd + 네트워크/rootfs 확장 + ssh. 미사용 systemd 유닛 마스킹, SDK 설정 포함 |
-| `recipes-core/images/swr-image-dev.bb` | 양산 이미지 + 디버그 도구(gdb/strace/tcpdump/ethtool/minicom/i2c-tools/sqlite3/kernel-modules) |
+| `conf/distro/fsl-imx-fb-swr.conf` | 배포판. NXP fsl-imx-fb에서 bluetooth/wifi/3g/nfc/nfs/zeroconf/pcmcia/pci/ptest/alsa/opengl 제거 — bluez/ofono/avahi/rpcbind/wpa/mesa가 이미지에서 빠짐. 기본 시간대 Asia/Seoul |
+| `recipes-core/images/swr-image.bb` | 양산 이미지: systemd + swr + swr-web + lighttpd + ntpd + curl + SDMA 펌웨어/firmwared(RS485 DMA 필수) + 네트워크/rootfs 확장 + ssh. 미사용 systemd 유닛 마스킹, SDK 설정 포함 |
+| `recipes-core/images/swr-image-dev.bb` | 양산 이미지 + 디버그 도구(gdb/strace/tcpdump/ethtool/minicom/i2c-tools/sqlite3/jq/htop/kernel-modules) |
 | `recipes-core/swr` | SmartRoute 앱 빌드/설치 (`externalsrc`, `SWR_SRC_DIR`), `swr.service` 자동 실행, 런타임 디렉터리 |
 | `recipes-core/swr-web` | 웹 UI를 `/var/www/html`에 설치 (`externalsrc`, `SWR_WEB_SRC_DIR`), `config.js` API_BASE 패치 |
 | `recipes-extended/lighttpd` | `lighttpd.conf` 교체 (`mod_proxy`: `/api` → 127.0.0.1:8080), 서비스 자동 실행 |

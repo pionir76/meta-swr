@@ -17,6 +17,8 @@ IMAGE_INSTALL += " \
     i2c-tools \
     sqlite3 \
     util-linux \
+    jq \
+    htop \
 "
 
 # kernel-modules를 통째로 넣으면 udev가 입력장치(snvs 전원키) modalias로 evbug

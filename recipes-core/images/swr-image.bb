@@ -16,7 +16,15 @@ inherit core-image extrausers
 #   systemd-timesyncd와 둘 다 돌면 시간이 되돌아가는 문제가 있어(2026-09 실기기)
 #   timesyncd는 아래에서 마스킹한다.
 # systemd-analyze: 부팅 시간 분석용(64KB). tools-profile 없이도 쓸 수 있게 따로 넣음.
+# curl: 현장 API 테스트/배포 스크립트용(펌웨어팀 요청 2026-10-13). libcurl은 이미
+#   의존성으로 들어 있어 CLI 바이너리(약 300KB)만 추가됨.
 # kernel-module-imx-rngc/rng-core: 하드웨어 난수(/dev/hwrng) - 모듈 전체 대신 이것만.
+# firmware-imx-sdma-imx6q + firmwared: **필수**. SDMA 펌웨어(imx/sdma/sdma-imx6q.bin)가
+#   없으면 i.MX UART 드라이버의 DMA 준비가 실패해 "We cannot prepare for the TX slave
+#   dma!"가 반복되고 RS485(ttymxc1) Modbus RTU 통신이 전부 타임아웃된다(2026-10-13
+#   실기기 - imx-image-core에서 전용 이미지로 바꾸며 빠뜨렸던 항목). firmwared는 커널
+#   request_firmware의 sysfs 폴백을 처리하는 NXP 데몬 - imx-image-core/meta-sdr100과
+#   동일하게 유지(마스킹 금지).
 IMAGE_INSTALL += " \
     swr \
     swr-web \
@@ -25,6 +33,9 @@ IMAGE_INSTALL += " \
     ntp \
     tzdata \
     systemd-analyze \
+    curl \
+    firmware-imx-sdma-imx6q \
+    firmwared \
     kernel-module-imx-rngc \
     kernel-module-rng-core \
 "
