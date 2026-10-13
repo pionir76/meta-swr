@@ -1,0 +1,27 @@
+From: SWR <dev@swr.local>
+Date: Tue, 13 Oct 2026 10:00:00 +0900
+Subject: [PATCH] mx6ullevk: default fdt_file to imx6ull-swr.dtb
+
+The SWR SmartRoute gateway reuses the mx6ull_14x14_evk U-Boot board port
+but boots its own device tree. Make it the default so that a fresh/erased
+environment boots the right DTB without relying on the EVK findfdt
+autodetection (which would pick imx6ull-14x14-evk.dtb).
+
+Upstream-Status: Inappropriate [custom board configuration]
+
+---
+ include/configs/mx6ullevk.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/configs/mx6ullevk.h b/include/configs/mx6ullevk.h
+--- a/include/configs/mx6ullevk.h
++++ b/include/configs/mx6ullevk.h
+@@ -85,7 +85,7 @@
+ 	"console=ttymxc0\0" \
+ 	"fdt_high=0xffffffff\0" \
+ 	"initrd_high=0xffffffff\0" \
+-	"fdt_file=undefined\0" \
++	"fdt_file=imx6ull-swr.dtb\0" \
+ 	"fdt_addr=0x83000000\0" \
+ 	"tee_addr=0x84000000\0" \
+ 	"tee_file=undefined\0" \

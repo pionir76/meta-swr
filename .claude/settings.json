@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl -sL https://raw.githubusercontent.com/libpinyin/libpinyin/954ecc3522686fb30a78d12080da1145df3f24da/COPYING -o /tmp/libpinyin_COPYING)",
+      "Bash(curl -sL \"https://api.github.com/repos/libpinyin/libpinyin/git/trees/954ecc3522686fb30a78d12080da1145df3f24da\")",
+      "Bash(curl -s \"https://api.github.com/repos/libpinyin/libpinyin/git/trees/de11fd48f8e58ee457b2fd75873496758d0b7024?recursive=1\")",
+      "Bash(curl -s \"https://api.github.com/repos/libpinyin/libpinyin/git/trees/de11fd48f8e58ee457b2fd75873496758d0b7024\")"
+    ]
+  }
+}

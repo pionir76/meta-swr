@@ -1,0 +1,7 @@
+# SmartRoute "service" 포트 - FEC2(20b4000). 양산 보드에 PHY가 실장되면
+# 이 주소로 올라온다. 기본 게이트웨이는 field 포트 쪽 하나만 둔다.
+[Match]
+Path=platform-20b4000.ethernet
+
+[Network]
+Address=192.168.0.151/24

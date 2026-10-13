@@ -1,0 +1,9 @@
+uuu_version 1.4.72
+
+# eMMC 인식 확인만 (플래싱 안 함): sudo uuu ./prove_emmc.uuu
+SDP: boot -f u-boot.imx -scanlimited 0x800000
+
+FB: ucmd mmc list
+FB: ucmd mmc dev 1
+FB: ucmd mmc info
+FB: done

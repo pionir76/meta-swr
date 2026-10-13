@@ -1,0 +1,15 @@
+uuu_version 1.4.72
+
+# 이미지는 그대로 두고 U-Boot 환경만 다시 설정: sudo uuu ./set_bootdelay.uuu
+# 주의: env default -a를 하지 않으므로 EVK/OP-TEE 시절 환경이 남은 기기에는
+# 단독으로 쓰지 말고 flash_emmc_with_bootdelay.uuu로 전체 플래싱할 것.
+SDP: boot -f u-boot.imx -scanlimited 0x800000
+
+FB: ucmd setenv bootdelay 1
+FB: ucmd setenv mmcargs 'setenv bootargs console=${console},${baudrate} root=${mmcroot} quiet'
+FB: ucmd setenv fdt_file imx6ull-swr.dtb
+FB: ucmd setenv stdin serial
+FB: ucmd setenv stdout serial
+FB: ucmd setenv stderr serial
+FB: ucmd saveenv
+FB: done

@@ -1,0 +1,42 @@
+uuu_version 1.4.72
+
+# SWR SmartRoute gateway - eMMC 전체 플래싱 (meta-sdr100과 같은 구조).
+# flash-emmc.sh가 @WIC@를 실제 이미지 파일명으로 바꿔 deploy 디렉토리에 복사한 뒤
+# 실행한다. 이 원본을 직접 uuu에 넘기지 말 것.
+
+SDP: boot -f u-boot.imx -scanlimited 0x800000
+
+# U-Boot 환경을 이 U-Boot의 기본값으로 초기화한다. 환경은 eMMC의 별도 영역
+# (0xE0000)에 저장되어 wic 이미지를 플래싱해도 덮어써지지 않는다. 옛 환경이 남아
+# 있으면(예: EVK/OP-TEE 시절의 tee=yes, findtee, fdt_file) 새 U-Boot가 부팅하지
+# 못하거나 엉뚱한 DTB를 고를 수 있다. MAC 주소는 SoC 퓨즈(OCOTP)에 있으므로 이
+# 초기화와 무관하다.
+FB: ucmd env default -a
+
+# Select eMMC
+FB: ucmd setenv fastboot_dev mmc
+FB: ucmd setenv mmcdev 1
+FB: ucmd setenv emmc_dev 1
+FB: ucmd mmc dev 1
+FB: ucmd mmc info
+
+# Flash full WIC image to eMMC user area
+FB: flash -raw2sparse all @WIC@
+
+# Flash bootloader
+FB: flash bootloader u-boot.imx
+
+# bootdelay 1: 생산 시 U-Boot에서 MAC 퓨즈를 기록해야 하므로 0은 금지.
+FB: ucmd setenv bootdelay 1
+# quiet: 커널/systemd 콘솔 출력 축소(부팅 시간 단축). 경고 이상은 계속 출력되고
+# dmesg로 전체 로그 확인 가능.
+FB: ucmd setenv mmcargs 'setenv bootargs console=${console},${baudrate} root=${mmcroot} quiet'
+# 전용 DTB (컴파일 기본값과 같지만 명시). 복구용 순정 EVK DTB로 돌리려면
+# U-Boot에서: setenv fdt_file imx6ull-14x14-evk.dtb; saveenv
+FB: ucmd setenv fdt_file imx6ull-swr.dtb
+FB: ucmd setenv stdin serial
+FB: ucmd setenv stdout serial
+FB: ucmd setenv stderr serial
+FB: ucmd saveenv
+
+FB: done

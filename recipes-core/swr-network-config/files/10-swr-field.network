@@ -1,0 +1,11 @@
+# SmartRoute "field" 포트 - 현장 장비(Modbus TCP 등)와 유지보수 PC가 붙는 쪽.
+# 인터페이스 이름(eth0/eth1)은 커널 프로브 순서에 따라 붙어서 FEC2가 eth0,
+# FEC1이 eth1이 된다. 이름 대신 udev ID_PATH로 FEC1(2188000)을 고정 매칭.
+# 시제품 보드는 이 포트(FEC1)에만 PHY가 실장되어 있다.
+[Match]
+Path=platform-2188000.ethernet
+
+[Network]
+Address=192.168.0.150/24
+Gateway=192.168.0.1
+DNS=8.8.8.8
